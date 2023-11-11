@@ -138,7 +138,7 @@ void IniciarArreglo(LUDO& l) {
 }
 void IngresarNombres(LUDO& l) {//inputing the names of jugador s
 	for (int i = 0; i < l.NumeroDeJugadores; i++) {
-		cout << "Enter Name of jugador  " << i + 1 << " : ";
+		cout << "Ingrese nombre del jugador " << i + 1 << " : ";
 		cin >> l.nombre[i];
 	}
 }
@@ -161,13 +161,13 @@ void FichasAlcanzadas(int jugador , int index, LUDO& l) {
 	if (ContadorAlcanzado(jugador , l) == l.numeroDeFichas) {
 		system("CLS");
 		cout << "\n\n\n\n\t\t\t";
-		cout << l.nombre[jugador ] << " has Won!!!";
+		cout << l.nombre[jugador ] << "FELICIDADESSSS GANASTE!!!";
 		haGanado = true;
 		return;
 	}
 	short int dice = rand() % 6 + 1;
 	LimpiarYMostrar(jugador , l);
-	cout << "Bonus Turn on reaching The Token: \n";
+	cout << "Bonus por alcanzar la ficha:: \n";
 	cout << "Die Number : " << dice << endl;
 	if (dice != 6 and !FichasFuera(jugador , l))
 		return;
@@ -188,9 +188,9 @@ void EliminarFicha(int jugadorindex, int jugador , int position, LUDO& l, int di
 					break;
 				}
 		if (position == punto_partida[funjugador ]) {
-			cout << (funjugador  == jugador  ? "You can't bring out the token When there is already a token present\n" : "You can't Kill the jugador  at it's jugadorInicial point\n");
+			cout << (funjugador  == jugador  ? "No puedes sacar la ficha cuando ya hay una ficha presente\n": "No puedes matar al jugador en su punto de partida\n");
 			if (FichasFuera(jugador , l) >= 2) {
-				cout << "Choose Another Token\n"; MoverFicha(jugador , l, dice);
+				cout << "Elige otra fichan\n"; MoverFicha(jugador , l, dice);
 				agregarPuntajeDoble  = true;
 			}
 			else {
@@ -198,9 +198,9 @@ void EliminarFicha(int jugadorindex, int jugador , int position, LUDO& l, int di
 			}
 		}
 		else if (funjugador  == jugador ) {
-			cout << "You can't kill your own jugador \n";
+			cout << "No puedes comer a tu propio jugador \n";
 			if (FichasFuera(jugador , l) >= 2) {
-				cout << "Choose Another Token\n"; MoverFicha(jugador , l, dice);
+				cout << "Elige otra ficha\n"; MoverFicha(jugador , l, dice);
 				agregarPuntajeDoble  = true;
 			}
 			else return;
@@ -224,7 +224,7 @@ void EliminarFicha(int jugadorindex, int jugador , int position, LUDO& l, int di
 			else if (FichasFuera(jugador , l)) {
 				 PosicionCorrecta(jugador , jugadorindex, dice, l);
 				LimpiarYMostrar(jugador , l);
-				cout << "Bonus Turn on Killing The Token\n";
+				cout << "Bonus por comer ficha\n";
 				cout << "Die Number is " << fundice << endl;
 				MoverFicha(jugador , l, fundice);
 				agregarPuntajeDoble  = true;
@@ -242,7 +242,7 @@ void SacarFichasEnTablero(int jugador , LUDO& l) {//taking the token out when, n
 	if (ContadorAlcanzado(jugador , l) == 4 or FichasFuera(jugador , l) == l.numeroDeFichas) return;
 	 short int index;
 	if (!salidaFicha) {
-		cout << "Choose The Token You Want to Bring Out : ";
+		cout << "Elija la ficha que desea sacar : ";
 		for (int i = 0; i < l.numeroDeFichas; i++) {
 			if (l. FichasDisponible[jugador ][i] != ' ')
 				cout << l. FichasDisponible[jugador ][i] << ' ';
@@ -250,7 +250,7 @@ void SacarFichasEnTablero(int jugador , LUDO& l) {//taking the token out when, n
 		do {//making the right choice
 			cin >> eleccionSalidaFicha;
 			if ((! FichasDisponible(jugador , eleccionSalidaFicha, l)))
-				cout << "Invalid Choice! Choose Only Available Token : ";
+				cout << "Eleccion invalida! Elija ficha disponible : ";
 		} while (! FichasDisponible(jugador , eleccionSalidaFicha, l));
 		salidaFicha = true;
 	}
@@ -271,7 +271,7 @@ void SacarFichasEnTablero(int jugador , LUDO& l) {//taking the token out when, n
 		salidaFicha = false;
 		short int dice = rand() % 6 + 1;
 		LimpiarYMostrar(jugador , l);
-		cout << "Bonus Turn on Taking The Token Out\nDie Number : " << dice << endl;
+		cout << "Bonus al sacar una ficha\nDie Number : " << dice << endl;
 		MoverFicha(jugador , l, dice);
 	}
 }
@@ -332,38 +332,38 @@ void MoverFicha(int jugador , LUDO& l, int dice) {
 	bool move = true;
 	if (dice == 6 and FichasDisponible(jugador , l)) {
 		move = false;
-		cout << "Do you Want to bring another token Out? \nPress y for Yes and n for No ";
+		cout << "Quieres sacar otra ficha? \nPresione y para Si y n para NO";
 		do {
 			choiceToken = _getch();
 			cout << endl;
 			if (choiceToken != 'y' and choiceToken != 'n')
-				cout << "Invalid Choice! Choose Only y or n : ";
+				cout << "Eleccion invalida! Elije y/n : ";
 		} while (choiceToken != 'y' and choiceToken != 'n');
 	}
 	if (choiceToken == 'y')
 		SacarFichasEnTablero(jugador , l);
 	else if (choiceToken == 'n' or move) {
 		char choice; short int index;
-		cout << "Which Token Do you want to move : ";
+		cout << "Que ficha deseas mover: ";
 		do {
 			index = -1;
 			cin >> choice;
 			for (int i = 0; i < l.numeroDeFichas; i++)
 				if (l.ficha[jugador ][i] == choice)
-					index = i;//the index where the choosen token is present
+					index = i;//el índice donde está presente la ficha elegida
 			if (index == -1 or l.fichasEnTablero[jugador ][index] != choice)
-				cout << "Token is not available! Enter Right choice : ";
+				cout << "La ficha no esta disponible! Ingrese correctamente: ";
 		} while (index == -1 or l.fichasEnTablero[jugador ][index] != choice);
-		//moving token
+		//movimiento ficha
 		if (l.puntos[jugador ][index] + dice == 56) {
-			cout << "Token Reached" << endl;
+			cout << "Ficha alcanzada :(" << endl;
 			FichasAlcanzadas(jugador , index, l);
 			return;
 		}
 		else if (l.puntos[jugador ][index] + dice > 55) {
-			cout << "You can't move forward\n";
+			cout << "No puedes avanzar\n";
 			if (FichasFuera(jugador , l) == 2 or FichasFuera(jugador , l) == 3) {
-				cout << "Choose Another Token\n"; MoverFicha(jugador , l, dice);
+				cout << "Elige otra ficha\n"; MoverFicha(jugador , l, dice);
 				otroAgregarPuntajeDoble = true;
 			}
 			else return;
@@ -372,7 +372,7 @@ void MoverFicha(int jugador , LUDO& l, int dice) {
 		if (dice == 6) {
 			dice = rand() % 6 + 1;
 			LimpiarYMostrar(jugador , l);
-			cout << "Bonus Turn on Getting a SIX\n";
+			cout << "Bonus por obtener un SEIS\n";
 			cout << "Die Number : " << dice << endl;
 			MoverFicha(jugador , l, dice);
 		}
@@ -383,8 +383,8 @@ void MostrarTurno(int jugador , LUDO& l) {
 	short int length = name.length() + 11;
 	cout << "\t\t\t\t\t\t ";
 	for (int i = 0; i < length; i++)
-		cout << '_'; cout << endl;
-	cout << "\t\t\t\t\t\t|  " << name << "'s Turn  |\n";
+	cout << '_'; cout << endl;
+	cout << "\t\t\t\t\t\t|" << "Turno de "<<name<< "  |\n";
 	cout << "\t\t\t\t\t\t|";
 	for (int i = 0; i < length; i++)
 		cout << '_'; cout << "|\n";
@@ -399,7 +399,7 @@ void JuegoPrincipal(LUDO& l) {
 			system("CLS");
 			MostrarTurno(i, l);
 			MostrarTablero(l);
-			cout << "Press any key to roll the die or \'S\' to Save Game ";
+			cout << "Presione cualquier tecla para tirar el dado o \'S\' para guardar el juego";
 			getch = _getch();
 			if (getch == 'S') {
 				SavingGame(l);
@@ -422,24 +422,24 @@ void JuegoPrincipal(LUDO& l) {
 		}
 		i = 0;
 	}
-	cout << "\n\n\nPress any key to go back to Main Menu ";
+	cout << "\n\n\nPresione cualquier tecla para regresar al Menu ";
 	_getch();
 	Menu();
 }
 void NuevoJuego() {
 	LUDO l;
 	system("CLS");
-	cout << "Enter Number of Tokens <1-4> : ";
+	cout << "Ingrese el numero de jugadores [2-4]: ";
 	do {
 		cin >> l.numeroDeFichas;
 		if (l.numeroDeFichas <= 0 or l.numeroDeFichas > 4)
-			cout << "There Must be at least 1 Token to play with ";
+			cout << "Debe haber al menos 1 ficha para jugar ";
 	} while (l.numeroDeFichas <= 0 or l.numeroDeFichas > 4);
 	cout << "Enter Number of jugador s <2-4> : ";
 	do {
 		cin >> l.NumeroDeJugadores;
 		if (l.NumeroDeJugadores <= 1 or l.NumeroDeJugadores > 4)
-			cout << "There must be at least 2-4 jugador s ";
+			cout << "Debe haber al menos 2 o 4 jugadores ";
 	} while (l.NumeroDeJugadores<= 1 or l.NumeroDeJugadores > 4);
 	IniciarArreglo(l);
 	IngresarNombres(l);
@@ -472,7 +472,7 @@ void GuardarJuego() {
 	read.seekg(0, ios::beg);
 	if (read.fail() or filesize < sizeof(LUDO)) {
 		cout << "\t\t0 Saved Games,Play New Games\n\n";
-		cout << "\t\tPress any key to back to Main Menu ";
+		cout << "\t\tPresione cualquier tecla para regresar al  MENU ";
 		_getch();
 		Menu();
 	}
@@ -490,7 +490,7 @@ void GuardarJuego() {
 		do {
 			cin >> choice;
 			if (choice <= 0 or choice > numberofGames)
-				cout << "Invalid Choice, Enter Again : ";
+				cout << "Elección invalida, Ingrese nuevamente: ";
 		} while (choice <= 0 or choice > numberofGames);
 		read.seekg(0, ios::beg);
 		read.seekg(sizeof(LUDO) * (choice - 1), ios::beg);
@@ -501,16 +501,16 @@ void GuardarJuego() {
 }
 void Reglas() {
 	system("CLS");
-	cout << "\n\n\n\n\n\t\tReglas\n";
-	cout << "\t\t1. The Token will be out only when the Die Number is 6.\n";
-	cout << "\t\t2. The Token can't be taken out when there is already a\n\t\tToken of same jugador .\n";
-	cout << "\t\t3. If the Token of Other jugador  is Present at jugadorInicial Point \n\t\tof Another jugador , and The jugador  Brings the token out"
-		"\n\t\tThen the Token Already Present will be killed\n";
-	cout << "\t\t4. If the Token Moves to the Position where there is already a \n\t\tToken Present,then the already present token will be killed\n";
-	cout << "\t\t5. You will be Given A Bonus Turn if you Bring The Token Out,Kill a Token or \n\t\tif your Token Reached Home\n";
-	cout << "\t\t6. There are no stoping point in This LUDO as compared to Traditional LUDO\n";
-	cout << "\t\t7. You will also be Given a Bonus Turn on having a Six\n\n\n";
-	cout << (opcionReglas ? "Press any key to continue" : "Press any key to go back to Main Menu");
+	cout << "\n\n\n\n\n\t\tREGLAS\n";
+	cout << "\t\t1. La ficha saldra solo cuando el numero del dado sea 6.\n";
+	cout << "\t\t2. La ficha no puede sacarse cuando ya hay una ficha del mismo jugador.\n";
+	cout << "\t\t3. Si la ficha de otro jugador esta presente en el punto de inicio \n\t\tdel otro jugador, y el jugador saca la ficha,"
+	"\n\t\tentonces la ficha ya presente sera eliminado.\n";
+	cout << "\t\t4. Si la ficha se mueve a una posicion donde ya hay una \n\t\tficha presente, la ficha ya presente sera eliminado.\n";
+	cout << "\t\t5. Se te dara un turno de bonificacion si sacas la ficha, eliminas una ficha o \n\t\tsi tu ficha llega a casa.\n";
+	cout << "\t\t6. No hay puntos de parada en este LUDO en comparación con el LUDO tradicional.\n";
+	cout << "\t\t7. Tambien se te dara un turno de bonificacion al obtener un seis.\n\n\n";
+	cout << (opcionReglas ? "Presiona cualquier tecla para continuar" : "Presiona cualquier tecla para volver al MENU");
 	_getch();
 	if (opcionReglas) {
 		opcionReglas = false;
@@ -522,8 +522,8 @@ void Reglas() {
 void AcercaDe() {
 	system("CLS");
 	cout << "\n\n\n\n\n\t\tAcercaDe\n\n";
-	cout << "\t\tThis Game is Created By Muhammad Aizaz Ahmad, a Software Engineering student at P.U.C.I.T\n\n\n";
-	cout << "\t\tPress any key to back to Main Menu ";
+	cout << "\t\tEste juego es creado por Alejandra Veliz, Nicholas Yarrow, Jordan Rodriguez y Jesus Reyes. \n\n\n";
+	cout << "\t\tPresione una tecla para volver al MENU ";
 	_getch();
 	Menu();
 }
@@ -531,17 +531,17 @@ void Menu() {
 	system("CLS");
 	char choice;
 	cout << "\n\n\n\n\n\t\tMAIN MENU\n";
-	cout << "\t\t1. PLAY NEW GAME\n";
+	cout << "\t\t1. NUEVO JUEGO\n";
 	cout << "\t\t2. PLAY SAVED GAMES\n";
-	cout << "\t\t3. Reglas\n";
+	cout << "\t\t3. REGLAS\n";
 	cout << "\t\t4. AcercaDe\n";
-	cout << "\t\t5. EXIT\n\n";
-	cout << "\t\tPlease Select Your Option <1-5> : ";
+	cout << "\t\t5. SALIR\n\n";
+	cout << "\t\tSeleccione una opcion [1-5]: ";
 	do {
 		choice = _getch();
 		cout << endl;
 		if (choice != '1' and choice != '2' and choice != '3' and choice != '4' and choice != '5')
-			cout << "Please Select Correct Option <1-4> ";
+			cout << "Seleccione una opcion valida [1-4] ";
 	} while (choice != '1' and choice != '2' and choice != '3' and choice != '4' and choice != '5');
 	if (choice == '1')
 		NuevoJuego();
